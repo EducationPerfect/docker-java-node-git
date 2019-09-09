@@ -1,4 +1,4 @@
-FROM openjdk:8-jrk@sha256:44b7b7c7becb2980d2c2a096e7618bc3c43b14c4ec89173b210ca612d748f6fd
+FROM openjdk:10-ea-32-jdk@sha256:373a22222bee72944ac39cb80ce8ee26136fb07724b5c86a905f4f1a51731f34
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
