@@ -1,11 +1,30 @@
-FROM openjdk:10-ea-32-jdk@sha256:373a22222bee72944ac39cb80ce8ee26136fb07724b5c86a905f4f1a51731f34
+FROM ubuntu:14.04
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# Install Node.js
+RUN apt-get update && apt-get install --yes curl
+RUN curl --silent --location https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get install --yes nodejs
+RUN apt-get install --yes build-essential
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+RUN apt-get update && apt-get install -y libstdc++-4.9-dev
+
+# Install yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update -qq && apt-get install -qq --no-install-recommends \
-  nodejs \
-  yarn \
-  && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y yarn
+
+# Install Java
+RUN add-apt-repository ppa:openjdk-r/ppa
+RUN dpkg --add-architecture i386
+RUN apt-get update
+RUN apt-get install -y openjdk-8-jdk:i386
+
+# Clean Dependencies
+# RUN apt-get remove curl -y \
+#     && apt-get -y autoremove \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+WORKDIR /workspace
